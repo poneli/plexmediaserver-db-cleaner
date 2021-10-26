@@ -16,21 +16,25 @@ if [[ $EUID -gt 0 ]]; then
 	exit
 fi
 	printf "Stopping plexmediaserver ... \n"
-	systemctl stop plexmediaserver
+	sudo systemctl stop plexmediaserver
+	cd "$plexdir"
 	printf "Backing up database to file %s ... \n" "$plexdb_bak"
-	cp "$plexdir/$plexdb" "$plexdir/$plexdb_bak"
+	sudo cp "$plexdb" "$plexdb_bak"
 	printf "Plex dB is %sMB before cleanup/fix ... \n" "$plexdb_size"
 	printf "Dumping dB to file dump.sql ... \n"
-	$plexsqlite "$plexdir/$plexdb" ".output "$plexdir/dump.sql"" ".dump"
+	sudo "$plexsqlite" "$plexdb" ".output dump.sql" ".dump"
+	sleep 1
 	printf "Deleting old Plex dB ... \n"
-	rm "$plexdir/$plexdb"
+	sudo rm "$plexdb"
 	printf "Importing new Plex dB from dump.sql ... \n"
-	$plexsqlite "$plexdir/$plexdb" ".read "$plexdir/dump.sql""
+	sudo "$plexsqlite" "$plexdb" ".read dump.sql"
+	sleep 1
 	printf "Changing owner of Plex dB ... \n"
-	chown plex:plex "$plexdir/$plexdb"
+	sudo chown plex:plex "$plexdb"
 	printf "Plex dB is %sMB after cleanup/fix ... \n" "$plexdb_size"
 	printf "Cleanup files ... \n"
-	rm "$plexdir/dump.sql" "$plexdir/com.plexapp.plugins.library.db-shm" "$plexdir/com.plexapp.plugins.library.db-wal"
+	sudo rm dump.sql com.plexapp.plugins.library.db-shm com.plexapp.plugins.library.db-wal 2>&1 >/dev/null
 	printf "Starting plexmediaserver ... \n"
+	sudo systemctl start plexmediaserver
 	printf "Done ... \n"
 exit 0
