@@ -1,7 +1,7 @@
 #!/bin/bash
-#### Description: Upgrades plexmediaserver for debian/ubuntu based distros
+#### Description: plexmediaserver database cleaner
 ####
-#### Written by: poneli on 2021 October 3
+#### Written by: poneli on 2021 October 26
 #### Published on: https://github.com/poneli/
 #### =====================================================================
 #### <VARIABLES>
