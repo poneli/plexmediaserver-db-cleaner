@@ -33,7 +33,7 @@ fi
 	sudo chown plex:plex "$plexdb"
 	printf "Plex dB is %sMB after cleanup/fix ... \n" "$plexdb_size"
 	printf "Cleanup files ... \n"
-	sudo rm dump.sql com.plexapp.plugins.library.db-shm com.plexapp.plugins.library.db-wal 2>&1 >/dev/null
+	sudo rm -f dump.sql com.plexapp.plugins.library.db-shm com.plexapp.plugins.library.db-wal 2>&1 >/dev/null
 	printf "Starting plexmediaserver ... \n"
 	sudo systemctl start plexmediaserver
 	printf "Done ... \n"
